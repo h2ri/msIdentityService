@@ -1,0 +1,9 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+#route for oauth token
+POST    /oauth/access_token         controllers.OAuthController.accessToken
+
+#authorized route
+GET     /resources                  controllers.OAuthController.resources
