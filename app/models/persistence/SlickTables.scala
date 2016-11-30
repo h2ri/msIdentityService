@@ -28,6 +28,20 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
 
   implicit val accountsTableQ : TableQuery[AccountsTable] = TableQuery[AccountsTable]
 
+  class RolesTable(tag:Tag) extends BaseTable[Role](tag, "role"){
+    def role_name = column[String]("role_name")
+    def oauthClientId = column[Long]("oauth_client_id")
+
+    def * = (id,role_name,oauthClientId,createdAt) <> (Role.tupled , Role.unapply)
+
+    def oauthClient = foreignKey(
+      "role_client_fk",
+      oauthClientId,
+      OauthClientTableQ)(_.id)
+  }
+
+  implicit val roleTableQ : TableQuery[RolesTable] = TableQuery[RolesTable]
+
   class OauthClientTable(tag : Tag) extends BaseTable[OauthClient](tag,"oauth_clients") {
     def ownerId = column[Long]("owner_id")
     def grantType = column[String]("grant_type")

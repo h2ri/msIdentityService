@@ -7,3 +7,5 @@ POST    /oauth/access_token         controllers.OAuthController.accessToken
 
 #authorized route
 GET     /resources                  controllers.OAuthController.resources
+
+POST     /role                       controllers.RoleController.list
