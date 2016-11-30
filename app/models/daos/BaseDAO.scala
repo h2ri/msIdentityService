@@ -10,6 +10,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 
 trait AbstractBaseDAO[T,A] {
+  def list(): Future[Seq[A]]
   def insert(row : A): Future[Long]
   def insert(rows : Seq[A]): Future[Seq[Long]]
   def update(row : A): Future[Int]
@@ -24,6 +25,10 @@ trait AbstractBaseDAO[T,A] {
 
 abstract class BaseDAO[T <: BaseTable[A], A <: BaseEntity]()(implicit val tableQ: TableQuery[T]) extends AbstractBaseDAO[T,A] with HasDatabaseConfigProvider[JdbcProfile] {
   import dbConfig.driver.api._
+
+  override def list(): Future[Seq[A]] = {
+    db.run(tableQ.result)
+  }
 
   def insert(row : A): Future[Long] ={
     insert(Seq(row)).map(_.head)

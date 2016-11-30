@@ -8,4 +8,11 @@ POST    /oauth/access_token         controllers.OAuthController.accessToken
 #authorized route
 GET     /resources                  controllers.OAuthController.resources
 
-POST     /role                       controllers.RoleController.list
+GET     /role                       controllers.RoleController.list
+
+#Account
+GET     /account                    controllers.AccountController.list
+POST    /account/                   controllers.AccountController.create
+GET     /account/:id                controllers.AccountController.show(id:Long)
+#PUT     /account/:id                controllers.AccountController.update(id:Long)
+#DELETE  /account/:id                controllers.AccountController.delete(id:Long)

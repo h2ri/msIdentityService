@@ -23,7 +23,7 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
   class AccountsTable(tag : Tag) extends BaseTable[Account](tag, "accounts") {
     def email = column[String]("email")
     def password = column[String]("password")
-    def * = (id, email, password, createdAt) <> (Account.tupled, Account.unapply)
+    def * = (id, email, password, createdAt) <> ((Account.apply _).tupled, Account.unapply _)
   }
 
   implicit val accountsTableQ : TableQuery[AccountsTable] = TableQuery[AccountsTable]

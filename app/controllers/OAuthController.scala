@@ -45,6 +45,13 @@ class OAuthController  @Inject()(accountsDAO : AccountsDAO,
     Ok(Json.toJson(request.authInfo))
   }
 
+  def accountList = Action { implicit request =>
+    accountsDAO.findById(1).map {
+      result => println(result)
+    }
+    Ok("true")
+  }
+
 //  class MyDataHandler extends DataHandler[Account] {
 //
 //    override def validateClient(request: AuthorizationRequest): Future[Boolean] =  {

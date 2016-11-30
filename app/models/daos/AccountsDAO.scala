@@ -3,14 +3,16 @@ package models.daos
 import java.security.MessageDigest
 
 import com.google.inject.Inject
-import models.entities.Account
+import models.entities.{Account, OauthAccessToken, OauthClient}
 import models.persistence.SlickTables.AccountsTable
 import play.api.db.slick.DatabaseConfigProvider
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
 trait AccountsDAO extends BaseDAO[AccountsTable,Account]{
   def authenticate(email: String, password: String): Future[Option[Account]]
+  //def create(account: Account): Future[Account]
 }
 
 class AccountsDAOImpl @Inject()(override protected val dbConfigProvider: DatabaseConfigProvider) extends AccountsDAO  {
@@ -29,4 +31,8 @@ class AccountsDAOImpl @Inject()(override protected val dbConfigProvider: Databas
     val hashedPassword = digestString(password)
     findByFilter( acc => acc.password === hashedPassword && acc.email === email).map(_.headOption)
   }
+
+//  override def create(account: Account): Future[Account] = {
+//
+//  }
 }
