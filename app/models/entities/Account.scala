@@ -1,16 +1,31 @@
 package models.entities
 
 import java.sql.Timestamp
+
 import models.entities.TimeStampFormat._
-import play.api.libs.json.Json
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
 
 
 case class Account(id: Long, email: String, password: String, createdAt: Timestamp) extends BaseEntity
 
+case class AccountValidator(email: String, password: String)
 
-object Account {
 
-  implicit val teamReads = Json.reads[Account]
-  implicit val teamWrites = Json.writes[Account]
+object AccountValidator {
+
+  implicit val accountReads: Reads[AccountValidator] = (
+    (JsPath \ "email").read[String] and
+      (JsPath \ "password").read[String]
+    ) (AccountValidator.apply _)
+
+  implicit val accountWrites: Writes[AccountValidator] = (
+    (JsPath \ "email").write[String] and
+      (JsPath \ "password").write[String]
+    ) (unlift(AccountValidator.unapply _))
 }
+  object Account{
+    implicit val teamReads = Json.reads[Account]
+    implicit val teamWrites = Json.writes[Account]
+  }

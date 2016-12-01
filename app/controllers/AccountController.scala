@@ -2,7 +2,7 @@ package controllers
 
 import com.google.inject.Inject
 import models.daos.AccountsDAO
-import models.entities.Account
+import models.entities.{Account,AccountValidator}
 import play.api.mvc.BodyParsers
 //import play.api.libs.json.{JsError, Json}
 import controllers.utils.Response
@@ -29,13 +29,16 @@ class AccountController @Inject() (accountsDAO: AccountsDAO) extends Controller{
   }
 
   def create = Action.async(BodyParsers.parse.json)  { implicit request =>
-    request.body.validate[Account].fold(
+
+
+    request.body.validate[AccountValidator].fold(
+
       errors => {
         println("In Error")
         Future(new Response(false, JsError.toJson(errors)).send)
       },
       account => {
-        val result = accountsDAO.insert(account)
+        val result = accountsDAO.create(account)
         println(result)
         result.map(msg => Ok(Json.obj("status" -> "Ok" , "message" -> Json.toJson(msg))) )
       }
