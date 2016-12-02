@@ -1,11 +1,12 @@
 package models.persistence
 
-import java.sql.{Timestamp}
+import java.sql.Timestamp
 
 import models.entities._
 import play.api.Play
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfig}
 import slick.driver.JdbcProfile
+import slick.lifted.ProvenShape
 
 /**
   * The companion object.
@@ -27,6 +28,14 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
   }
 
   implicit val accountsTableQ : TableQuery[AccountsTable] = TableQuery[AccountsTable]
+
+  class TestTable(tag:Tag) extends BaseTable[Test](tag, "test") {
+    def name = column[String]("name")
+    def * = (id,name,createdAt) <> ((Test.apply _).tupled, Test.unapply _)
+  }
+
+  implicit val testTableQ : TableQuery[TestTable] = TableQuery[TestTable]
+
 
   class RolesTable(tag:Tag) extends BaseTable[Role](tag, "role"){
     def role_name = column[String]("role_name")

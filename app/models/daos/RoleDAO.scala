@@ -20,6 +20,6 @@ trait RoleDAO extends BaseDAO[RolesTable,Role]{
 }
 
 
-class RoleDAOImpl @Inject() (override protected val dbConfigProvider: DatabaseConfigProvider,  roleDAO : RoleDAO) extends RoleDAO{
+class RoleDAOImpl @Inject() (override protected val dbConfigProvider: DatabaseConfigProvider,  roleDAO : RoleDAOImpl) extends RoleDAO{
 
 }

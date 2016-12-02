@@ -15,4 +15,9 @@ GET     /account                    controllers.AccountController.list
 POST    /account/                   controllers.AccountController.create
 GET     /account/:id                controllers.AccountController.show(id:Long)
 #PUT     /account/:id                controllers.AccountController.update(id:Long)
-#DELETE  /account/:id                controllers.AccountController.delete(id:Long)
+DELETE  /account/:id                controllers.AccountController.delete(id:Long)
+
+#test
+GET     /test                       controllers.TestController.list
+
+

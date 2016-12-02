@@ -15,6 +15,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 trait AccountsDAO extends BaseDAO[AccountsTable,Account]{
   def authenticate(email: String, password: String): Future[Option[Account]]
   def create(account: AccountValidator): Future[Account]
+  def updateAccount(account: AccountValidator) : Future[Account]
+
 }
 
 class AccountsDAOImpl @Inject()(override protected val dbConfigProvider: DatabaseConfigProvider) extends AccountsDAO  {
@@ -44,4 +46,6 @@ class AccountsDAOImpl @Inject()(override protected val dbConfigProvider: Databas
     )
     insert(nAccount).map(id => nAccount.copy(id = id))
   }
+
+  override def updateAccount(account: AccountValidator): Future[Account] = ???
 }
