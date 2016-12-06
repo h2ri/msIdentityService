@@ -9,9 +9,17 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scalaoauth2.provider._
 
-/**
-  * Created by hariprasadk on 30/11/16.
-  */
+
+
+//class MyTokenEndpoint extends TokenEndpoint {
+//  val passwordNoCred = new Password() {
+//    override def clientCredentialRequired = false
+//  }
+//
+//  override val handlers = Map(
+//    OAuthGrantType.PASSWORD -> passwordNoCred
+//  )
+//}
 
 class MyDataHandler @Inject()(accountsDAO : AccountsDAO,
                              oauthAuthorizationCodesDAO : OauthAuthorizationCodesDAO,

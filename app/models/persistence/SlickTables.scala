@@ -21,6 +21,10 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
     def createdAt = column[Timestamp]("created_at")
   }
 
+  abstract class BaseTableWithOptionId[T](tag: Tag,name : String) extends Table[T](tag,name){
+    def id = column[Option[Long]]("id", O.PrimaryKey , O.AutoInc)
+  }
+
   class AccountsTable(tag : Tag) extends BaseTable[Account](tag, "accounts") {
     def email = column[String]("email")
     def password = column[String]("password")

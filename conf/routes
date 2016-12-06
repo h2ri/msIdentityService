@@ -8,7 +8,8 @@ POST    /oauth/access_token         controllers.OAuthController.accessToken
 #authorized route
 GET     /resources                  controllers.OAuthController.resources
 
-GET     /role                       controllers.RoleController.list
+
+#GET     /role                       controllers.RoleController.list
 
 #Account
 GET     /account                    controllers.AccountController.list

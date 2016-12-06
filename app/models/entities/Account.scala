@@ -16,12 +16,12 @@ case class AccountValidator(email: String, password: String)
 object AccountValidator {
 
   implicit val accountReads: Reads[AccountValidator] = (
-    (JsPath \ "email").read[String] and
+    (JsPath \ "username").read[String] and
       (JsPath \ "password").read[String]
     ) (AccountValidator.apply _)
 
   implicit val accountWrites: Writes[AccountValidator] = (
-    (JsPath \ "email").write[String] and
+    (JsPath \ "username").write[String] and
       (JsPath \ "password").write[String]
     ) (unlift(AccountValidator.unapply _))
 }

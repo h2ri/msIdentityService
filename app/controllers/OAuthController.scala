@@ -37,6 +37,9 @@ class OAuthController  @Inject()(accountsDAO : AccountsDAO,
     )
   }
 
+//  override val tokenEndpoint = new MyTokenEndpoint()
+
+
   def accessToken = Action.async { implicit request =>
     issueAccessToken(new MyDataHandler(accountsDAO,oauthAuthorizationCodesDAO,oauthAccessTokensDAO,oauthClientsDAO))
   }

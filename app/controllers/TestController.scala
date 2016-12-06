@@ -6,6 +6,7 @@ import play.api.libs.json.Json
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.mvc.{Action, Controller}
+import com.typesafe.config.{Config,ConfigFactory}
 
 /**
   * Created by hariprasadk on 01/12/16.
