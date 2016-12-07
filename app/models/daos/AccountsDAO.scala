@@ -34,13 +34,7 @@ class AccountsDAOImpl @Inject()(override protected val dbConfigProvider: Databas
   def authenticate(email: String, password: String): Future[Option[Account]] = {
     //val hashedPassword = digestString(password)
     val hashedPassword = password
-
-    findByFilter( acc => {val answer = acc.password === hashedPassword && acc.email === email
-      println(acc.password)
-      println(hashedPassword)
-      println(answer)
-      answer
-    }).map(_.headOption)
+    findByFilter( acc =>   acc.password === hashedPassword && acc.email === email).map(_.headOption)
   }
 
   override def create(account: AccountValidator): Future[Account] = {

@@ -53,6 +53,7 @@ abstract class BaseDAO[T <: BaseTable[A], A <: BaseEntity]()(implicit val tableQ
     db.run(tableQ.filter(_.id === id).result.headOption)
   }
 
+
   def findByFilter[C : CanBeQueryCondition](f: (T) => C): Future[Seq[A]] = {
     db.run(tableQ.withFilter(f).result)
   }

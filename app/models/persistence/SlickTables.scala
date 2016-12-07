@@ -96,7 +96,9 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
     def oauthClientId = column[Long]("oauth_client_id")
     def accessToken = column[String]("access_token")
     def refreshToken = column[String]("refresh_token")
-    def * = (id, accountId, oauthClientId, accessToken, refreshToken, createdAt) <> (OauthAccessToken.tupled, OauthAccessToken.unapply)
+    def * = (id, accountId, oauthClientId, accessToken, refreshToken, createdAt) <> ((OauthAccessToken.apply _).tupled, OauthAccessToken.unapply _)
+
+
 
     def account = foreignKey(
       "oauth_access_token_account_fk",

@@ -2,10 +2,11 @@ package controllers
 
 import com.google.inject.Inject
 import models.daos.{AccountsDAO, OauthAccessTokensDAO, OauthAuthorizationCodesDAO, OauthClientsDAO}
-import models.entities.{Account, AccountValidator}
+import models.entities.{Account, AccountValidator, OauthAccessToken}
 import play.api.mvc.BodyParsers
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext}
 import scalaoauth2.provider._
 //import play.api.libs.json.{JsError, Json}
 import controllers.utils.Response
@@ -60,6 +61,8 @@ class AccountController @Inject() (accountsDAO: AccountsDAO,
 
   def create = Action.async(BodyParsers.parse.json)   {implicit request =>
 
+
+
     request.body.validate[AccountValidator].fold(
 
       errors => {
@@ -70,14 +73,62 @@ class AccountController @Inject() (accountsDAO: AccountsDAO,
 
         //val reuquestBodyWithEncrptedPassword = request.bod
         //val requestBody = cleanUserForm(request.body)
+
         val result = accountsDAO.create(account)
-        val test = issueAccessToken(new MyDataHandler(accountsDAO,oauthAuthorizationCodesDAO,oauthAccessTokensDAO,oauthClientsDAO))
+//        result.map( s => {
+//          issueAccessToken(new MyDataHandler(accountsDAO, oauthAuthorizationCodesDAO, oauthAccessTokensDAO, oauthClientsDAO))
+//          Await.result(oauthAccessTokensDAO.findById(s.id),Duration.Inf).map(msg => {
+//            Ok(Json.obj("status" -> "Ok" , "message" -> Json.toJson(msg)))
+//
+//          })
+//        })
+
+        result.map(s => {
+          Await.result(issueAccessToken(new MyDataHandler(accountsDAO, oauthAuthorizationCodesDAO, oauthAccessTokensDAO, oauthClientsDAO)), Duration.Inf)
+          Await.result(oauthAccessTokensDAO.findByAccountId(s.id).map(res => {
+            println(res)
+            println(s.id)
+            res match {
+              case Some(token: OauthAccessToken) => Ok(Json.obj("status" -> "Ok" , "payload" -> Json.toJson(token)))
+              case _ => BadRequest(Json.obj("status" -> "failed"))
+            }
+          }), Duration.Inf)
+          //Ok(Json.obj("status" -> "Ok" , "message" -> Json.toJson(1)))
+        })
+
+
+
+        //.map(msg => Ok(Json.obj("status" -> "Ok" , "message" -> Json.toJson(msg))) )
+
+
+        //val resultMap = result.map(r => r.id)
+        //val test = issueAccessToken(new MyDataHandler(accountsDAO, oauthAuthorizationCodesDAO, oauthAccessTokensDAO, oauthClientsDAO))
+        //val resultAccessToken = oauthAccessTokensDAO.findById()
+        //result.map(msg => Ok(Json.obj("status" -> "Ok" , "message" -> Json.toJson(msg))) )
+
+        //        test.map(
+        //          re =>
+        //            println((re.body).dataStream.map {
+        //              result =>
+        //                //println(result.decodeString("US-ASCII"))
+        //                val s  = result.toString()
+        //                println(s)
+        //            })
+
+
+
+        //test.map(  res => println(((res.body).asJava).dataStream())
+        //test.map( re => (re.body).dataStream.flatMapMerge( m => m) )
         //println(test.)
-        test
+
+         //Result(200, Map(Pragma -> no-cache, Cache-Control -> no-store))
+
         //result.map(msg => Ok(Json.obj("status" -> "Ok" , "message" -> Json.toJson(msg))) )
       }
     )
   }
+
+  //def combineJson(a:Future[Result],b:)
 
 //  def modifyBody(requestBody : JsValue)
 

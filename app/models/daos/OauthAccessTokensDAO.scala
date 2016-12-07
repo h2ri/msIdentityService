@@ -20,6 +20,7 @@ trait OauthAccessTokensDAO extends BaseDAO[OauthAccessTokenTable,OauthAccessToke
   def findByAccessToken(accessToken: String): Future[Option[OauthAccessToken]]
   def findByAuthorized(account: Account, clientId: String): Future[Option[OauthAccessToken]]
   def findByRefreshToken(refreshToken: String): Future[Option[OauthAccessToken]]
+  def findByAccountId(accountId : Long) : Future[Option[OauthAccessToken]]
 }
 
 class OauthAccessTokensDAOImpl  @Inject()(override protected val dbConfigProvider: DatabaseConfigProvider, oauthClientsDAO: OauthClientsDAO) extends OauthAccessTokensDAO {
@@ -42,6 +43,8 @@ class OauthAccessTokensDAOImpl  @Inject()(override protected val dbConfigProvide
     insert(oauthAccessToken).map(id => oauthAccessToken.copy(id = id))
   }
 
+
+
   override def delete(account: Account, client: OauthClient): Future[Int] = {
     deleteByFilter( oauthToken => oauthToken.accountId === account.id && oauthToken.oauthClientId === client.id)
   }
@@ -61,6 +64,10 @@ class OauthAccessTokensDAOImpl  @Inject()(override protected val dbConfigProvide
 
   override def findByAccessToken(accessToken: String): Future[Option[OauthAccessToken]] = {
     findByFilter(_.accessToken === accessToken).map(_.headOption)
+  }
+
+  override def findByAccountId(accountId: Long): Future[Option[OauthAccessToken]] = {
+    findByFilter(_.accountId === accountId).map(_.headOption)
   }
 
   override def findByRefreshToken(refreshToken: String): Future[Option[OauthAccessToken]] = {

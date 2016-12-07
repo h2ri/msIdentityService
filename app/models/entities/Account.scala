@@ -21,6 +21,7 @@ object AccountValidator {
     ) (AccountValidator.apply _)
 
   implicit val accountWrites: Writes[AccountValidator] = (
+    //(JsPath \ "id").write[Option[Long]] and
     (JsPath \ "username").write[String] and
       (JsPath \ "password").write[String]
     ) (unlift(AccountValidator.unapply _))
