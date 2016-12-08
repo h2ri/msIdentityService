@@ -18,7 +18,7 @@ insert into "accounts"("email", "password") values ('bob@example.com', '48181acd
 insert into "accounts"("email", "password") values ('alice@example.com', '522b276a356bdf39013dfabea2cd43e141ecc9e8'); -- password:alice
 
 insert into "oauth_clients"("owner_id", "grant_type", "client_id", "client_secret")
-  values (1, 'client_credentials', 'bob_client_id', 'bob_client_secret');
+  values (1, 'password', 'bob_client_id', 'bob_client_secret');
 insert into "oauth_clients"("owner_id", "grant_type", "client_id", "client_secret", "redirect_uri")
   values (2, 'authorization_code', 'alice_client_id', 'alice_client_secret', 'http://localhost:3000/callback');
 insert into "oauth_clients"("owner_id", "grant_type", "client_id", "client_secret")

@@ -354,5 +354,5 @@ db {
 slick.dbs.default.driver="slick.driver.PostgresDriver$"
 slick.dbs.default.db.driver="org.postgresql.Driver"
 slick.dbs.default.db.url="jdbc:postgresql://localhost:5432/identity_service"
-slick.dbs.default.db.user="hariprasadk"
+slick.dbs.default.db.user=""
 slick.dbs.default.db.password=""

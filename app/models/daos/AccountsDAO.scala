@@ -11,6 +11,7 @@ import play.api.db.slick.DatabaseConfigProvider
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import utils.MD5
 
 trait AccountsDAO extends BaseDAO[AccountsTable,Account]{
   def authenticate(email: String, password: String): Future[Option[Account]]
@@ -33,7 +34,7 @@ class AccountsDAOImpl @Inject()(override protected val dbConfigProvider: Databas
 
   def authenticate(email: String, password: String): Future[Option[Account]] = {
     //val hashedPassword = digestString(password)
-    val hashedPassword = password
+    val hashedPassword = MD5.hash(password)
     findByFilter( acc =>   acc.password === hashedPassword && acc.email === email).map(_.headOption)
   }
 
@@ -42,7 +43,7 @@ class AccountsDAOImpl @Inject()(override protected val dbConfigProvider: Databas
     val nAccount = new Account(
       id = 0,
       email = account.email,
-      password = account.password,
+      password = MD5.hash(account.password),
       createdAt = createdAt
     )
     insert(nAccount).map(id => nAccount.copy(id = id))
