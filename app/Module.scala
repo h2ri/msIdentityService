@@ -23,6 +23,9 @@ class Module extends AbstractModule {
     bind(classOf[OauthAuthorizationCodesDAO]).to(classOf[OauthAuthorizationCodesDAOImpl])
     bind(classOf[OauthAccessTokensDAO]).to(classOf[OauthAccessTokensDAOImpl])
     bind(classOf[OauthClientsDAO]).to(classOf[OauthClientsDAOImpl])
+    bind(classOf[PolicyDAO]).to(classOf[PolicyDAOImpl])
+    bind(classOf[RoleDAO]).to(classOf[RoleDAOImpl])
+    bind(classOf[RolePolicyDAO]).to(classOf[RolePolicyDAOImpl])
   }
 
 }

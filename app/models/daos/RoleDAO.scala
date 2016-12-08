@@ -1,7 +1,8 @@
 package models.daos
 
 import com.google.inject.Inject
-import models.persistence.SlickTables.RolesTable
+import models.persistence.SlickTables.RoleTable
+//import models.persistence.SlickTables.RolesTable
 import models.entities.Role
 import play.api.db.slick.DatabaseConfigProvider
 
@@ -11,15 +12,8 @@ import scala.concurrent.Future
   * Created by hariprasadk on 29/11/16.
   */
 
-//trait AccountsDAO extends BaseDAO[AccountsTable,Account]{
-//  def authenticate(email: String, password: String): Future[Option[Account]]
-//}
-
-trait RoleDAO extends BaseDAO[RolesTable,Role]{
-
+trait RoleDAO extends BaseDAOWithOptionId[RoleTable, Role] {
 }
 
-
-class RoleDAOImpl @Inject() (override protected val dbConfigProvider: DatabaseConfigProvider,  roleDAO : RoleDAOImpl) extends RoleDAO{
-
+class RoleDAOImpl @Inject() (override protected val dbConfigProvider:DatabaseConfigProvider) extends RoleDAO {
 }

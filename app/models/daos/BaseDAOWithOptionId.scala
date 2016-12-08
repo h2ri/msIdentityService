@@ -19,7 +19,7 @@ trait AbstractBaseDAOWithOptionId[T,A] {
   def insert(rows : Seq[A]): Future[Seq[Option[Long]]]
   def update(row : A): Future[Int]
   def update(rows : Seq[A]): Future[Unit]
-  def findById(id : Long): Future[Option[A]]
+  def findById(id : Option[Long]): Future[Option[A]]
   def findByFilter[C : CanBeQueryCondition](f: (T) => C): Future[Seq[A]]
   def deleteById(id : Long): Future[Int]
   def deleteById(ids : Seq[Long]): Future[Int]

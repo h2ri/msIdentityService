@@ -18,7 +18,29 @@ GET     /account/:id                controllers.AccountController.show(id:Long)
 #PUT     /account/:id                controllers.AccountController.update(id:Long)
 DELETE  /account/:id                controllers.AccountController.delete(id:Long)
 
+#Policy
+GET     /policy                     controllers.PolicyController.list
+GET     /policy/:id                 controllers.PolicyController.show(id:Long)
+POST    /policy/                    controllers.PolicyController.create
+DELETE  /policy/:id                 controllers.PolicyController.delete(id:Long)
+
+
+#Role
+GET     /role                     controllers.RoleController.list
+GET     /role/:id                 controllers.RoleController.show(id:Long)
+POST    /role/                    controllers.RoleController.create
+DELETE  /role/:id                 controllers.RoleController.delete(id:Long)
+
+#RolePolicy
+GET     /role_policy                     controllers.RolePolicyController.list
+GET     /role_policy/:id                 controllers.RolePolicyController.show(id:Long)
+POST    /role_policy/                    controllers.RolePolicyController.create
+DELETE  /role_policy/:id                 controllers.RolePolicyController.delete(id:Long)
+
+
 #test
 GET     /test                       controllers.TestController.list
+
+
 
 

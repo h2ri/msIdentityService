@@ -40,20 +40,20 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
 
   implicit val testTableQ : TableQuery[TestTable] = TableQuery[TestTable]
 
-
-  class RolesTable(tag:Tag) extends BaseTable[Role](tag, "role"){
-    def role_name = column[String]("role_name")
-    def oauthClientId = column[Long]("oauth_client_id")
-
-    def * = (id,role_name,oauthClientId,createdAt) <> (Role.tupled , Role.unapply)
-
-    def oauthClient = foreignKey(
-      "role_client_fk",
-      oauthClientId,
-      OauthClientTableQ)(_.id)
-  }
-
-  implicit val roleTableQ : TableQuery[RolesTable] = TableQuery[RolesTable]
+//
+//  class RolesTable(tag:Tag) extends BaseTable[Role](tag, "role"){
+//    def role_name = column[String]("role_name")
+//    def oauthClientId = column[Long]("oauth_client_id")
+//
+//    def * = (id,role_name,oauthClientId,createdAt) <> (Role.tupled , Role.unapply)
+//
+//    def oauthClient = foreignKey(
+//      "role_client_fk",
+//      oauthClientId,
+//      OauthClientTableQ)(_.id)
+//  }
+//
+//  implicit val roleTableQ : TableQuery[RolesTable] = TableQuery[RolesTable]
 
   class OauthClientTable(tag : Tag) extends BaseTable[OauthClient](tag,"oauth_clients") {
     def ownerId = column[Long]("owner_id")
@@ -113,5 +113,58 @@ object SlickTables extends HasDatabaseConfig[JdbcProfile] {
   }
 
   implicit val OauthAccessTokenTableQ : TableQuery[OauthAccessTokenTable] = TableQuery[OauthAccessTokenTable]
+
+  //Policy Table
+  class PolicyTable(tag : Tag) extends BaseTableWithOptionId[Policy](tag, "policy") {
+    def service_id = column[Long]("service_id")
+    def label = column[String]("label")
+
+    def service = foreignKey(
+      "client_id_fk",
+      service_id,
+      OauthClientTableQ)(_.id)
+
+    def * = (id,service_id,label) <> ((Policy.apply _).tupled, Policy.unapply _)
+
+  }
+  implicit val policyTableQ : TableQuery[PolicyTable] = TableQuery[PolicyTable]
+  //End Policy
+
+
+  //Role Table
+  class RoleTable(tag:Tag) extends BaseTableWithOptionId[Role](tag,"role") {
+    def name = column[String]("name")
+    def parent_id = column[Option[Long]]("parent_id")
+
+    def parent = foreignKey(
+      "role_as_parent",
+      parent_id,
+      RoleTableQ)(_.id)
+
+    def * = (id,name,parent_id) <> ((Role.apply _).tupled, Role.unapply _)
+  }
+
+  implicit val RoleTableQ : TableQuery[RoleTable] = TableQuery[RoleTable]
+  //End Role
+
+  class RolePolicyTable(tag:Tag) extends BaseTableWithOptionId[RolePolicy](tag,"role_policy") {
+    def role_id = column[Option[Long]]("role_id")
+    def policy_id = column[Option[Long]]("policy_id")
+
+    def roleReference = foreignKey(
+      "role_id_fk",
+      role_id,
+      RoleTableQ)(_.id)
+
+    def policyReference = foreignKey(
+      "policy_id_fk",
+      policy_id,
+      policyTableQ)(_.id)
+
+    def * = (id,role_id,policy_id) <>  ((RolePolicy.apply _).tupled, RolePolicy.unapply _)
+  }
+
+  implicit val RolePolicyTableQ : TableQuery[RolePolicyTable] = TableQuery[RolePolicyTable]
+
 
 }
